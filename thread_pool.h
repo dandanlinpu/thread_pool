@@ -15,6 +15,7 @@ private:
 	pthread_cond_t cond;
 	
 };
+
 class jobqueue{
 public:
 	bsem has_jobs;
@@ -24,8 +25,9 @@ public:
 	void printinfo();
 private:
 	pthread_mutex_t _rwmutex;
-	list< std::function<void(void)> > _joblist;
+	list<std::function<void(void)> > _joblist;
 };
+
 class thread_pool{
 public:
 	thread_pool(int n);
@@ -42,6 +44,5 @@ private:
 	jobqueue _job_q;
 	//int _num_threads_alive;
 	//pthread_mutex_t _mutex;
-	bsem _done_alljobs;
 };
 	

@@ -53,7 +53,6 @@ void thread_pool::init(){
 	_threads_id.resize(_n);	
 	//pthread_mutex_init(_mutex);
 	_job_q.init();
-	_done_alljobs.init();
 	
 }
 void thread_pool::start(){
@@ -71,15 +70,12 @@ void thread_pool::add_work(function<void(void)> work){
 }
 
 void thread_pool::_threads_do(){
-	cout<<"new threads"<<endl;
  	while(keep_working){
-		cout<<"keep_working.."<<endl;
 		_job_q.has_jobs.wait();
 		function<void(void)> job=_job_q.get();
 		if(job){
 			job();	
 		}
-		cout<<"after working.."<<endl<<endl;
 		sleep(1);
 	}
 }
