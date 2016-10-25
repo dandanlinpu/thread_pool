@@ -56,7 +56,7 @@ public:
     pthread_t id;
     int var;
 };
-//2 保存this指针
+//2 保存static this指针,这意味着多个对象时会有问题
 class Test{
 public:
     Test(){
@@ -70,6 +70,7 @@ public:
     static Test * me;
 };
 Test * Test::me=NULL;
+//3.传递this指针
 
 int main(){
     std::cout<<(SIGUSR1)<<endl;

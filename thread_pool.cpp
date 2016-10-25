@@ -30,7 +30,7 @@ void jobqueue::push(function<void(void)> job){
 	_joblist.push_back(job);
 	pthread_mutex_unlock(&_rwmutex);
 }
-function<void(void)> jobqueue::get(){
+function<void(void)> jobqueue::pull(){
 	function<void(void)> r;
 	pthread_mutex_lock(&_rwmutex);
 	if(!_joblist.empty()){	
@@ -63,7 +63,7 @@ void thread_pool::start(){
 }
 void thread_pool::stop(){
 	keep_working=false;
-}
+}  
 void thread_pool::add_work(function<void(void)> work){
 	_job_q.push(work);
 	_job_q.has_jobs.signal();
@@ -72,7 +72,7 @@ void thread_pool::add_work(function<void(void)> work){
 void thread_pool::_threads_do(){
  	while(keep_working){
 		_job_q.has_jobs.wait();
-		function<void(void)> job=_job_q.get();
+		function<void(void)> job=_job_q.pull();
 		if(job){
 			job();	
 		}
@@ -87,6 +87,7 @@ void my_job(int i){
 	cout<<"jobs : "<<i<<endl;
 }
 int main(){
+
 	auto f1=bind(my_job,1);
 	auto f2=bind(my_job,2);
 	thread_pool th(3);
@@ -97,7 +98,7 @@ int main(){
 	th.add_work(f1);
 	th.add_work(f2);
 	th.start();
-	
  	while(true){
+
 	}
 }
