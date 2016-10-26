@@ -1,0 +1,33 @@
+#include<iostream>
+#include<functional>
+#include<signal.h>
+#include<pthread.h>
+class sig_wrapper{
+public:
+    sig_wrapper(int _s,std::function<void(int)> _f){
+        sig=_s;
+        handler=_f;
+    }
+    void set_sig(int s){
+        sig=s;
+    }
+    void set_handler(std::function<void(int)> h){
+        handler=h; 
+    }
+    void reg(){
+        sigemptyset(&act.sa_mask);
+        act.sa_flags=0;
+        act.sa_handler=call_handler;
+        if(sigaction(sig,&act,NULL)==-1){
+            fprintf(stderr,"reg sig failed !\n");
+        }
+    }
+private:
+    struct sigaction act;
+    static std::function<void(int)> handler;
+    int sig;
+    static void call_handler(int sig){
+        handler(sig);    
+    }
+};
+std::function<void(int)> sig_wrapper::handler=nullptr;
