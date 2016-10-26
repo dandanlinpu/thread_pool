@@ -53,11 +53,15 @@ int main()
     tt.send_sigal(pthread_self());
 }
 #endif
-#if ilinux
+   #if ilinux
+//linux yun add
 void fun(){
     int a;
+//linux yun add
     
 i}}
 #endif
+//linux yun add
+//linux yun add
 //linux yun add
 //linux yun add
