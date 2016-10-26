@@ -1,0 +1,11 @@
+若远程库被其他人更新，那么push本地分支：push origin master会报错。解决：
+1. 取回远程更新
+    git fetch origin         
+2.合并到master
+    git merge origin/master   
+    然后查看冲突的文件，并根据提示：HEAD、oigin/master ====，修改文件内容
+3.重新提交修改的文件到本地库
+    git add file.cpp
+    git commit -m "update"
+4.再同步到远程库
+    git push origin master
