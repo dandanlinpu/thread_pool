@@ -49,7 +49,8 @@ class test
 };
 int main()
 {
-    test tt;
-    tt.send_sigal(pthread_self());
+    test ttwin;
+    ttwin.send_sigal(pthread_self());
 }
 #endif
+i want ot change
