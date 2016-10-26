@@ -54,6 +54,9 @@ int main()
     tt.send_sigal(pthread_self());
 }
 #endif
-#if 111
+#if 222
+void fun(){
+    
+}
 #endif
 
