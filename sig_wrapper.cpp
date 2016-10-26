@@ -50,10 +50,10 @@ class test
 };
 int main()
 {
-    test tttt;
-    tttt.send_sigal(pthread_self());
+    test tt;
+    tt.send_sigal(pthread_self());
 }
 #endif
-#if 1
+#if 111
 #endif
 
