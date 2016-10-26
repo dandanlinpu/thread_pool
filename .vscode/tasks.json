@@ -1,0 +1,19 @@
+{
+    "version": "0.1.0",
+    "command": "cmd", 
+    "isShellCommand": true,
+    "args": ["/C"],
+    "showOutput": "always",
+    "echoCommand": true,
+    "suppressTaskName": false,
+    "tasks": [
+        { 
+            "taskName": "g++",
+            "args":["-g","-std=c++11","-o","${file}.exe","${file}"]
+        },
+        { 
+            "taskName": "make",
+            "args": ["-f","makefile"]
+        }
+    ]
+}

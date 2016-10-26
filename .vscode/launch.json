@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++ g++",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${file}.exe",
+            "args": [],
+            "miDebuggerPath":"c:/mingw/bin/gdb.exe",
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "preLaunchTask": "g++"        
+        },
+        {
+            "name": "C++ make",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/tmp.exe",
+            "args": [],
+            "miDebuggerPath":"c:/mingw/bin/gdb.exe",
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "preLaunchTask": "make"        
+        }
+        
+    ]
+}
