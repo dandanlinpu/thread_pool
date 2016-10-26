@@ -21,6 +21,8 @@ void sig_wrapper::call_handler(int sig){
 }
 std::function<void(int)> sig_wrapper::handler=nullptr;
 
+#define CHOSE1
+
 #define _TEST
 #ifdef TEST
 class test{
