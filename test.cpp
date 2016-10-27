@@ -1,83 +1,59 @@
-#include<signal.h>
-#include<pthread.h>
-#include<functional>
-#include<iostream>
-using namespace std;
-
-std::function<void(int)> ff=nullptr;
-void cat(int para){
-    ff(para);
-};
-
-//1.sig helper
-class sig{
-public:
-    void reg_sig(int sig){
-        struct sigaction act;
-        sigemptyset(&act.sa_mask);
-        act.sa_flags=0;
-        act.sa_handler=call_handler;
-        if((sigaction(SIGUSR1,&act,NULL)==-1)){
-            fprintf(stderr,"can not handler\n"); 
-        }
-    }
-    void set_handler(std::function<void(int)> f){
-        handler=f;
-    }
-private:
-    static std::function<void(int)> handler;
-    static void call_handler(int pa){
-        handler(pa);
-    }
-};
-std::function<void(int)> sig::handler=nullptr;
-class thread{
-public:
-    sig ss;
-    thread(){
-        ss.reg_sig(SIGUSR1);
-        ss.set_handler(std::bind(&thread::catch_signal,this,std::placeholders::_1)); // 去除this指针的方法,连同对象一起打包，交给另一个处理类
-    }
-    void init(std::function<void(void)> _do){
-    }
-    void catch_signal(int sig){
-        var =1;
-        std::cout<<"catch var "<<var<<std::endl;
-        std::cout<<"sig "<<sig<<std::endl;
-        std::cout<<"catch pause\n"<<std::endl;
-    }
-    void pause(){
-        var = 0;
-        id=pthread_self();
-        std::cout<<"pause var "<<var<<std::endl;
-        std::cout<<"pause\n"<<std::endl;
-        pthread_kill(id,SIGUSR1);  
-    }
-    pthread_t id;
-    int var;
-};
-//2 保存static this指针,这意味着多个对象时会有问题
-class Test{
-public:
-    Test(){
-        me=this;
-    }
-    static void catch_signal(int sig){
-        me->var =1;
-        std::cout<<"catch change static var "<<me->var<<std::endl;
-    }
-    int var;
-    static Test * me;
-};
-Test * Test::me=NULL;
-//3.传递this指针
+#include "thread_pool.h"
+#include <unistd.h>
+//jobs
+void my_job(int i){
+    std::cout<<"jobs : "<<i<<std::endl;
+    sleep(2);
+}
 
 int main(){
-    std::cout<<(SIGUSR1)<<endl;
-    thread t;
-    t.pause();
+    #if 0 
+	auto f1=std::bind(my_job,1);
+	auto f2=std::bind(my_job,2);
+	thread_pool th(3);
+	th.init();
+	th.add_work(f2);
+	th.add_work(f1);
+	th.add_work(f2);
+	th.add_work(f1);
+	th.add_work(f2);
+	th.start();
+    #endif
+    #if 1
+    auto f0=std::bind(my_job,0);
+    auto f1=std::bind(my_job,1);
+    auto f2=std::bind(my_job,2);
+    auto f3=std::bind(my_job,3);
+    auto f4=std::bind(my_job,4);
+    auto f5=std::bind(my_job,5);
+    auto f6=std::bind(my_job,6);
+    thpool th(2);
+    th.init();
+    th.add_work(f0);
+    th.add_work(f1);
+    th.add_work(f2);
+    th.start();
+    th.pause();
+    th.add_work(f3);
+    th.add_work(f4);
+    #endif
+    #if 0
+	auto f1=std::bind(my_job,1); //function<void(void)>
+	auto f2=std::bind(my_job,2);
     
-    Test t1;
-    t1.catch_signal(1);
+    std::vector<thread> vt;
+    vt.resize(2);
+    vt[0].init(f1);
+    vt[1].init(f2);
+    for(auto it=vt.begin();it!=vt.end();it++){
+        it->start();
+        it->pause();
+        sleep(2);
+        it->resume();
+    }
+    #endif
+ 	while(true){
+
+	}
 }
 
