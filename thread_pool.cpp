@@ -170,6 +170,7 @@ void thpool::add_work(std::function<void(void)>work){
 	job_q.signal();
 }
 void thpool::init(){
+	threads.resize(n);
 	job_q.init();
 }
 void thpool::start(){

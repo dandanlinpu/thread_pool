@@ -66,9 +66,7 @@ private:
 class thpool{
 public:
     thpool(int _n);
-    void init(){
-        threads.resize(n);
-    };
+    void init();
     void add_work(std::function<void(void)> work);
     void start();
 private:    
