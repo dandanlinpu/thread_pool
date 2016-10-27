@@ -120,6 +120,11 @@ void thread::pause_do(int sig){
     }
 }
 #if 1 
+//thpool
+thpool::thpool(int _n):n(_n){
+}
+void thpool::add_work(std::function<void(void)>work){
+}
 //jobs
 void my_job(int i){
     while(true){
@@ -128,7 +133,7 @@ void my_job(int i){
     }
 }
 int main(){
-    #if 0
+    #if 1 
 	auto f1=std::bind(my_job,1);
 	auto f2=std::bind(my_job,2);
 	thread_pool th(3);
@@ -140,7 +145,7 @@ int main(){
 	th.add_work(f2);
 	th.start();
     #endif
-    #if 1
+    #if 0
 	auto f1=std::bind(my_job,1); //function<void(void)>
 	auto f2=std::bind(my_job,2);
     

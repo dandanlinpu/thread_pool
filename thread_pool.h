@@ -62,3 +62,18 @@ private:
     static void* thread_do_helper(void *arg);
     void pause_do(int sig);
 };
+//thpool
+class thpool{
+public:
+    thpool(int _n);
+    void init(){
+        threads.resize(n);
+    };
+    void add_work(std::function<void(void)> work);
+    void start(){};
+private:    
+    std::vector<thread> threads;
+    int n;    
+    jobqueue job_q;
+}
+;
