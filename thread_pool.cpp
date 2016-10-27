@@ -47,42 +47,7 @@ void jobqueue::printinfo(){
 	std::cout<<"job queue size: "<<_joblist.size()<<std::endl;
 }
 //thread_pool
-thread_pool::thread_pool(int n):_n(n){
-}
-void thread_pool::init(){
-	keep_working=true;
-	_threads_id.resize(_n);	
-	//pthread_mutex_init(_mutex);
-	_job_q.init();
-	
-}
-void thread_pool::start(){
-	for(int i=0;i<_n;i++){
-		pthread_create(&_threads_id[i],NULL,&thread_pool::_threads_do_helper,this);
-		pthread_detach(_threads_id[i]);
-	}
-}
-void thread_pool::stop(){
-	keep_working=false;
-}  
-void thread_pool::add_work(std::function<void(void)> work){
-	_job_q.push(work);
-	_job_q.has_jobs.signal();
-}
 
-void thread_pool::_threads_do(){
- 	while(keep_working){
-		_job_q.has_jobs.wait();
-		std::function<void(void)> job=_job_q.pull();
-		if(job){
-			job();	
-		}
-		sleep(1);
-	}
-}
-void* thread_pool::_threads_do_helper(void *context){
-	((thread_pool*)context)->_threads_do();
-}
 //thread_wrapper
 void thread::init(std::function<void(void)> _do){
     this->_do=_do;
@@ -119,71 +84,45 @@ void thread::pause_do(int sig){
         sleep(1);
     }
 }
-#if 1 
-//jobs
-void my_job(int i){
-    while(true){
-        std::cout<<"jobs : "<<i<<std::endl;
-        sleep(1);
-    }
-}
-int main(){
-    #if 1 
-	auto f1=std::bind(my_job,1);
-	auto f2=std::bind(my_job,2);
-	thread_pool th(3);
-	th.init();
-	th.add_work(f2);
-	th.add_work(f1);
-	th.add_work(f2);
-	th.add_work(f1);
-	th.add_work(f2);
-	th.start();
-    #endif
-    #if 0
-	auto f1=std::bind(my_job,1); //function<void(void)>
-	auto f2=std::bind(my_job,2);
-    
-    std::vector<thread> vt;
-    vt.resize(2);
-    vt[0].init(f1);
-    vt[1].init(f2);
-    for(auto it=vt.begin();it!=vt.end();it++){
-        it->start();
-        it->pause();
-        sleep(2);
-        it->resume();
-    }
-    #endif
- 	while(true){
-
-	}
-}
-#endif
-
 
 //thpool
 thpool::thpool(int _n):n(_n){
 }
 void thpool::add_work(std::function<void(void)>work){
+    std::cout<<"add work"<<std::endl;
 	job_q.push(work);
-	job_q.signal();
+	job_q.has_jobs.signal();
 }
 void thpool::init(){
+    pause_flag=false;
 	threads.resize(n);
 	job_q.init();
 }
 void thpool::start(){
 	for(int i=0;i<n;i++){
-		threads[i].init(std::bind(&thpool::threads_do,this));
+        std::cout<<"start i:"<<i<<std::endl;
+        std::function<void(void)> f=std::bind(&thpool::threads_do,this,i);
+		threads[i].init(f);
+        threads[i].start();
 	}
 }
-void thpool::threads_do(){
-	while(true){
-		job_q.has_jobs.wait();
-		std::function<void(void)> work=job_q.pull();
+void thpool::threads_do(int id){
+	while(pause_flag==false){
+        std::cout<<"threads "<<id<<std::endl;
+        job_q.has_jobs.wait();
+		auto work=job_q.pull();
 		if(work!=nullptr){
 			work();
 		}
+        std::cout<<"threads end "<<id<<std::endl;
 	}
 }
+void thpool::pause(){ 
+    std::cout<<"pause p_flag: "<<pause_flag<<std::endl;
+    pause_flag=true;
+    std::cout<<"pause p_flag: "<<pause_flag<<std::endl;
+}
+void thpool::resume(){
+    pause_flag=false;
+}
+

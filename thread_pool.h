@@ -28,24 +28,6 @@ private:
 	std::list<std::function<void(void)> > _joblist;
 };
 
-class thread_pool{
-public:
-	thread_pool(int n);
-	volatile bool keep_working;
-	void init();
-	void start();
-	void stop();
-	void add_work(std::function<void(void)> work);
-private:
-	int _n;
-	void _threads_do();
-	static void *_threads_do_helper(void *context);
-	std::vector<pthread_t> _threads_id;
-	jobqueue _job_q;
-	//int _num_threads_alive;
-	//pthread_mutex_t _mutex;
-};
-
 //thread
 class thread{
 public:
@@ -69,9 +51,15 @@ public:
     void init();
     void add_work(std::function<void(void)> work);
     void start();
+    void pause(); //线程不再去读取任务队列,正在运行的任务不受影响,如果有线程处于wait,那么是不受此pause_flag
+    void resume();
+    void destroy(){};
+    void threads_pause(){}; 
+    void threads_resume(){};
 private:    
     std::vector<thread> threads;
-	void threads_do();
+	void threads_do(int);
     int n;    
     jobqueue job_q;
+    volatile bool pause_flag;
 };
