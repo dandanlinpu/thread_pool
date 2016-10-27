@@ -120,11 +120,6 @@ void thread::pause_do(int sig){
     }
 }
 #if 1 
-//thpool
-thpool::thpool(int _n):n(_n){
-}
-void thpool::add_work(std::function<void(void)>work){
-}
 //jobs
 void my_job(int i){
     while(true){
@@ -165,3 +160,29 @@ int main(){
 	}
 }
 #endif
+
+
+//thpool
+thpool::thpool(int _n):n(_n){
+}
+void thpool::add_work(std::function<void(void)>work){
+	job_q.push(work);
+	job_q.signal();
+}
+void thpool::init(){
+	job_q.init();
+}
+void thpool::start(){
+	for(int i=0;i<n;i++){
+		threads[i].init(std::bind(&thpool::threads_do,this));
+	}
+}
+void thpool::threads_do(){
+	while(true){
+		job_q.has_jobs.wait();
+		std::function<void(void)> work=job_q.pull();
+		if(work!=nullptr){
+			work();
+		}
+	}
+}

@@ -70,10 +70,10 @@ public:
         threads.resize(n);
     };
     void add_work(std::function<void(void)> work);
-    void start(){};
+    void start();
 private:    
     std::vector<thread> threads;
+	void threads_do();
     int n;    
     jobqueue job_q;
-}
-;
+};
