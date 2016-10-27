@@ -17,7 +17,6 @@ void sig_wrapper::reg()
     act.sa_handler = call_handler;
     if (sigaction(sig, &act, NULL) == -1)
     {
-        std::cout<<"sigact"<<std::endl;
         fprintf(stderr, "reg sig failed !\n");
     }
 }
