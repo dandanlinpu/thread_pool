@@ -1,3 +1,6 @@
+#ifndef __SEM__H
+#define __SEM__H
+
 #include <iostream>
 #include <pthread.h>
 #include <functional>
@@ -12,3 +15,4 @@ private:
 	pthread_mutex_t mutex;
 	pthread_cond_t cond;	
 };
+#endif
