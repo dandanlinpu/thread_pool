@@ -42,7 +42,6 @@ void test2(){
     jobq.push(std::bind(job,2));
     p = jobq.pull();
     p();
-    
     p = jobq.pull();
     p();
 }

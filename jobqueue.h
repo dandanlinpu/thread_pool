@@ -1,3 +1,5 @@
+#ifndef __JOBQUEUE__H
+#define __JOBQUEUE__H
 #include <iostream>
 #include <list>
 #include <functional>
@@ -13,3 +15,4 @@ private:
     sem  has_jobs;
 	std::list<job_t> job_list;
 };
+#endif

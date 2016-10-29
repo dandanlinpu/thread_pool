@@ -1,3 +1,5 @@
+#ifndef __SIG_WRAPPER__H
+#define __SIG_WRAPPER__H
 #include<iostream>
 #include<functional>
 #include<signal.h>
@@ -14,3 +16,4 @@ private:
     static std::function<void(int)> handler;
     static void call_handler(int sig);
 };
+#endif
