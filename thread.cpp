@@ -43,8 +43,9 @@ int main(){
     th.resize(4);
     for(int i=0;i<th.size();i++){
         th[i]=thread(std::bind(job,i));
+            th.start();
     }
-    th.start();
+
 
 }
 #endif
