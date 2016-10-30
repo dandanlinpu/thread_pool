@@ -11,10 +11,10 @@ public:
     void start();
     void pause();
     void resume();
+    pthread_t thread_id();
 private:  
     //thread_id
     pthread_t id;
-    pthread_t thread_id();
 
     //pause
     volatile bool pause_flag; 

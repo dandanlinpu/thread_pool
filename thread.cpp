@@ -7,7 +7,6 @@ thread::thread(do_t _do){
     this->thread_do=_do;
 }
 void thread::start(){
-    std::cout<<"start"<<std::endl;
     pthread_create(&id,NULL,call_thread_do,this); 
 }   
 void thread::pause(){ 
@@ -42,7 +41,6 @@ void * thread::call_thread_do(void *arg){
 pthread_t thread::thread_id(){
     return id;
 }
-#define test
 #ifdef test
 int main(){
     auto job=[](int i){
@@ -70,7 +68,14 @@ int main(){
         sleep(2);
         it->pause();
     }
+    sleep(3);
+    th[0].resume();
+    sleep(3);
+    th[1].resume();
+    sleep(5);
+    th[2].resume();
     while(1){
     }
+
 }
 #endif

@@ -1,5 +1,5 @@
 #include "thread_pool.h"
-#include "sig_wrapper.h"
+#include "sig_wrapper2.h"
 #include <unistd.h> //sleeep()
 //bsem
 void bsem::init(){

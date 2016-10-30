@@ -21,7 +21,6 @@ void jobqueue::printinfo(){
 	std::cout<<"job queue size: "<<job_list.size()<<std::endl;
 }
 
-#define test
 #ifdef test
 void test1(){
     auto job=[](int i){std::cout<<i<<std::endl;};
