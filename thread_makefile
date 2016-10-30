@@ -1,0 +1,3 @@
+alltarget: thread
+thread:thread.cpp sig_wrapper.cpp
+	g++ -std=c++11 -lpthread -o thread thread.cpp sig_wrapper.cpp

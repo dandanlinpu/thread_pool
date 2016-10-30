@@ -2,8 +2,10 @@
 #include <unistd.h>
 //jobs
 void my_job(int i){
-    std::cout<<"jobs : "<<i<<std::endl;
-    sleep(2);
+   while(true){
+        std::cout<<"jobs : "<<i<<std::endl;
+        sleep(2);
+    }
 }
 
 int main(){
@@ -19,7 +21,7 @@ int main(){
 	th.add_work(f2);
 	th.start();
     #endif
-    #if 1
+    #if 0 
     auto f0=std::bind(my_job,0);
     auto f1=std::bind(my_job,1);
     auto f2=std::bind(my_job,2);
@@ -37,7 +39,7 @@ int main(){
     th.add_work(f3);
     th.add_work(f4);
     #endif
-    #if 0
+    #if 1
 	auto f1=std::bind(my_job,1); //function<void(void)>
 	auto f2=std::bind(my_job,2);
     
@@ -47,9 +49,9 @@ int main(){
     vt[1].init(f2);
     for(auto it=vt.begin();it!=vt.end();it++){
         it->start();
-        it->pause();
         sleep(2);
-        it->resume();
+        it->pause();
+        //it->resume();
     }
     #endif
  	while(true){

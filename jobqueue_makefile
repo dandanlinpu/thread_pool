@@ -1,0 +1,3 @@
+alltarget:jobqueue
+jobqueue: jobqueue.cpp sem.cpp
+	g++ -o jobqueue -std=c++11 jobqueue.cpp sem.cpp
