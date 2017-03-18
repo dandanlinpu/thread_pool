@@ -13,7 +13,7 @@ public:
 private:
     struct sigaction act;
     int sig;
-    static std::function<void(int)> handler;
+    static std::function<void(int)> handler; //如果多次使用使得此wrapper用于多个类对象（如数组sig_wrapper sig[3]），那么每次此handler会被覆盖
     static void call_handler(int sig);
 };
 #endif

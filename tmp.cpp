@@ -1,10 +1,12 @@
 #include<iostream>
+#include<vector>
 using namespace std;
 class T{
 public:
-    T(){}
+
     T(int a){}
 };
 int main(){
-    T t;
+    vector<T> vt;
+    vt.resize(1);
 }
