@@ -1,5 +1,5 @@
 #include "thread_pool.h"
-#include "sig_wrapper.h"
+#include "sig_wrapper2.h"
 #include <unistd.h> //sleeep()
 //bsem
 void bsem::init(){
@@ -57,9 +57,6 @@ void thread::init(std::function<void(void)> _do){
 
 void thread::start(){
     pthread_create(&id,NULL,thread_do_helper,this); 
-    //为什么不在thread_do中注册？因为有可能主线程调用start() 返回后立即调用pause(),导致线程函数中注册代码未真正完成.
-    sig_wrapper sig(SIGUSR1,std::bind(&thread::pause_do,this,std::placeholders::_1));
-    sig.reg();
 }   
 void thread::pause(){ 
         if(id==0){
@@ -74,6 +71,8 @@ void thread::resume(){
         pause_flag=0;
 };  
 void thread::thread_do(){
+    sig_wrapper sig(SIGUSR1,std::bind(&thread::pause_do,this,std::placeholders::_1));
+    sig.reg();
     _do();
 }   
 void* thread::thread_do_helper(void *arg){

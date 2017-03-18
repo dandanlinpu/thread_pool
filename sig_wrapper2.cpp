@@ -1,6 +1,4 @@
-#include <iostream>
-#include <functional>
-#include "sig_wrapper.h"
+#include "sig_wrapper2.h"
 sig_wrapper::sig_wrapper(int _s, std::function<void(int)> _h)
 {
     sig = _s;
